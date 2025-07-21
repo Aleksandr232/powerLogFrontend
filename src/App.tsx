@@ -14,8 +14,9 @@ function App() {
   // Новое состояние для меню
   const [userName] = useState('Иван Иванов'); // Можно заменить на данные из Telegram
   const [avatarUrl] = useState('https://ui-avatars.com/api/?name=Иван+Иванов'); // Можно заменить на аватар из Telegram
-  const [sport, setSport] = useState('Бег');
+  const [sport, setSport] = useState<string | null>(null);
   const sports = ['Бег', 'Гребля', 'Велоспорт'];
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -57,41 +58,58 @@ function App() {
 
   return (
     <div className="tg-diary">
-      {/* Главное меню */}
-      <div className="main-menu">
+      {/* Верхняя панель */}
+      <div className="header-bar">
         <img className="avatar" src={avatarUrl} alt="avatar" />
-        <select
-          className="sport-select"
-          value={sport}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSport(e.target.value)}
-        >
-          {sports.map((s: string) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
         <span className="user-name">{userName}</span>
       </div>
-      <h1>Дневник тренировок</h1>
-      <div className="add-block">
-        <input
-          type="text"
-          placeholder="Новая тренировка..."
-          value={note}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNote(e.target.value)}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addWorkout()}
-        />
-        <button onClick={addWorkout}>+</button>
-      </div>
-      <ul className="workout-list">
-        {workouts.length === 0 && <li className="empty">Нет записей</li>}
-        {workouts.map((w: {date: string, note: string}, idx: number) => (
-          <li key={idx} className="workout-item">
-            <span className="date">{w.date}</span>
-            <span className="note">{w.note}</span>
-            <button className="remove" onClick={() => removeWorkout(idx)}>&times;</button>
-          </li>
-        ))}
-      </ul>
+      {/* Центральная часть */}
+      {!started ? (
+        <div className="center-block">
+          <button className="start-btn" onClick={() => setStarted(true)}>
+            Начать тренировку
+          </button>
+        </div>
+      ) : !sport ? (
+        <div className="choose-sport">
+          <h2>Выберите вид спорта</h2>
+          <div className="sport-options">
+            {sports.map((s) => (
+              <button
+                key={s}
+                className="sport-card"
+                onClick={() => setSport(s)}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <>
+          <h1>Дневник тренировок — {sport}</h1>
+          <div className="add-block">
+            <input
+              type="text"
+              placeholder="Новая тренировка..."
+              value={note}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNote(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addWorkout()}
+            />
+            <button onClick={addWorkout}>+</button>
+          </div>
+          <ul className="workout-list">
+            {workouts.length === 0 && <li className="empty">Нет записей</li>}
+            {workouts.map((w: {date: string, note: string}, idx: number) => (
+              <li key={idx} className="workout-item">
+                <span className="date">{w.date}</span>
+                <span className="note">{w.note}</span>
+                <button className="remove" onClick={() => removeWorkout(idx)}>&times;</button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
