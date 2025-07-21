@@ -39,12 +39,7 @@ function App() {
     const id = params.get('id');
     if (id) {
       // Определяем адрес API
-      let API_HOST = '';
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        API_HOST = 'http://localhost:3001';
-      } else {
-        API_HOST = `http://${window.location.hostname}:3001`;
-      }
+      let API_HOST = 'http://localhost:3001';
       fetch(`${API_HOST}/api/user/${id}`)
         .then((res) => res.json())
         .then((data) => setUser(data))
