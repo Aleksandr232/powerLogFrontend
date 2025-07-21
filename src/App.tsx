@@ -67,7 +67,7 @@ function App() {
       {!started ? (
         <div className="center-block">
           <button className="start-btn" onClick={() => setStarted(true)}>
-            Начать тренировку
+            <span className="start-icon">⚡</span> Начать тренировку
           </button>
         </div>
       ) : !sport ? (
