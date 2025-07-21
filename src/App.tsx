@@ -11,6 +11,11 @@ function App() {
   const [workouts, setWorkouts] = useState<{date: string, note: string}[]>([]);
   const [note, setNote] = useState('');
   const [tg, setTg] = useState<any>(null);
+  // Новое состояние для меню
+  const [userName] = useState('Иван Иванов'); // Можно заменить на данные из Telegram
+  const [avatarUrl] = useState('https://ui-avatars.com/api/?name=Иван+Иванов'); // Можно заменить на аватар из Telegram
+  const [sport, setSport] = useState('Бег');
+  const sports = ['Бег', 'Гребля', 'Велоспорт'];
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -47,25 +52,39 @@ function App() {
   };
 
   const removeWorkout = (idx: number) => {
-    setWorkouts(workouts.filter((_, i) => i !== idx));
+    setWorkouts(workouts.filter((_, i: number) => i !== idx));
   };
 
   return (
     <div className="tg-diary">
+      {/* Главное меню */}
+      <div className="main-menu">
+        <img className="avatar" src={avatarUrl} alt="avatar" />
+        <select
+          className="sport-select"
+          value={sport}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSport(e.target.value)}
+        >
+          {sports.map((s: string) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <span className="user-name">{userName}</span>
+      </div>
       <h1>Дневник тренировок</h1>
       <div className="add-block">
         <input
           type="text"
           placeholder="Новая тренировка..."
           value={note}
-          onChange={e => setNote(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && addWorkout()}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNote(e.target.value)}
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addWorkout()}
         />
         <button onClick={addWorkout}>+</button>
       </div>
       <ul className="workout-list">
         {workouts.length === 0 && <li className="empty">Нет записей</li>}
-        {workouts.map((w, idx) => (
+        {workouts.map((w: {date: string, note: string}, idx: number) => (
           <li key={idx} className="workout-item">
             <span className="date">{w.date}</span>
             <span className="note">{w.note}</span>

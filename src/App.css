@@ -95,6 +95,50 @@
   padding: 24px 0;
 }
 
+.main-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 16px 0;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.sport-select {
+  flex: 1;
+  margin: 0 16px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fff;
+  outline: none;
+}
+.user-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+@media (max-width: 500px) {
+  .main-menu {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .avatar, .user-name {
+    margin: 0;
+  }
+  .sport-select {
+    margin: 0;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .tg-diary {
     --tg-bg: #181c20;
