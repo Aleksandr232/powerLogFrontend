@@ -1,0 +1,118 @@
+.tg-diary {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 32px 12px 12px 12px;
+  background: var(--tg-bg, #fff);
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.07);
+  font-family: 'Inter', Arial, sans-serif;
+  color: var(--tg-text, #222);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.tg-diary h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.add-block {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.add-block input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: var(--tg-input-bg, #f7f7f7);
+  color: var(--tg-text, #222);
+  transition: border 0.2s;
+}
+.add-block input:focus {
+  border: 1.5px solid #a0a0a0;
+}
+.add-block button {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-block button:hover {
+  background: #444;
+}
+
+.workout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.workout-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ececec;
+  font-size: 1rem;
+}
+.workout-item .date {
+  color: #888;
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+.workout-item .note {
+  flex: 1;
+  text-align: left;
+}
+.workout-item .remove {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.workout-item .remove:hover {
+  background: #ffeaea;
+}
+.empty {
+  color: #bbb;
+  text-align: center;
+  padding: 24px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tg-diary {
+    --tg-bg: #181c20;
+    --tg-text: #f7f7f7;
+    --tg-input-bg: #23272b;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+  }
+  .add-block input {
+    border: 1px solid #23272b;
+  }
+  .add-block button {
+    background: #f7f7f7;
+    color: #222;
+  }
+  .add-block button:hover {
+    background: #e0e0e0;
+  }
+  .workout-item .remove:hover {
+    background: #2c2323;
+  }
+}
