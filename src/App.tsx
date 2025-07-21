@@ -11,9 +11,14 @@ function App() {
   const [workouts, setWorkouts] = useState<{date: string, note: string}[]>([]);
   const [note, setNote] = useState('');
   const [tg, setTg] = useState<any>(null);
-  // Новое состояние для меню
-  const [userName] = useState('Иван Иванов'); // Можно заменить на данные из Telegram
-  const [avatarUrl] = useState('https://ui-avatars.com/api/?name=Иван+Иванов'); // Можно заменить на аватар из Telegram
+  // Новое состояние для пользователя
+  const [user, setUser] = useState<{
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    avatar_url: string;
+  } | null>(null);
   const [sport, setSport] = useState<string | null>(null);
   const sports = ['Бег', 'Гребля', 'Велоспорт'];
   const [started, setStarted] = useState(false);
@@ -24,6 +29,18 @@ function App() {
       window.Telegram.WebApp.ready();
       // Автоматически подстраиваем тему
       document.body.style.background = window.Telegram.WebApp.themeParams.bg_color || '';
+    }
+  }, []);
+
+  useEffect(() => {
+    // Получаем id из query-параметра
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) {
+      fetch(`http://localhost:3001/api/user/${id}`)
+        .then((res) => res.json())
+        .then((data) => setUser(data))
+        .catch(() => setUser(null));
     }
   }, []);
 
@@ -60,8 +77,8 @@ function App() {
     <div className="tg-diary">
       {/* Верхняя панель */}
       <div className="header-bar">
-        <img className="avatar" src={avatarUrl} alt="avatar" />
-        <span className="user-name">{userName}</span>
+        <img className="avatar" src={user?.avatar_url || 'https://ui-avatars.com/api/?name=Гость'} alt="avatar" />
+        <span className="user-name">{user ? `${user.first_name} ${user.last_name}` : 'Гость'}</span>
       </div>
       {/* Центральная часть */}
       {!started ? (
