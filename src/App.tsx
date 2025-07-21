@@ -22,6 +22,7 @@ function App() {
   const [sport, setSport] = useState<string | null>(null);
   const sports = ['Бег', 'Гребля', 'Велоспорт'];
   const [started, setStarted] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -37,7 +38,14 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     if (id) {
-      fetch(`http://localhost:3001/api/user/${id}`)
+      // Определяем адрес API
+      let API_HOST = '';
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        API_HOST = 'http://localhost:3001';
+      } else {
+        API_HOST = `http://${window.location.hostname}:3001`;
+      }
+      fetch(`${API_HOST}/api/user/${id}`)
         .then((res) => res.json())
         .then((data) => setUser(data))
         .catch(() => setUser(null));
@@ -77,9 +85,24 @@ function App() {
     <div className="tg-diary">
       {/* Верхняя панель */}
       <div className="header-bar">
-        <img className="avatar" src={user?.avatar_url || 'https://ui-avatars.com/api/?name=Гость'} alt="avatar" />
+        <img
+          className="avatar"
+          src={user?.avatar_url || 'https://ui-avatars.com/api/?name=Гость'}
+          alt="avatar"
+          onClick={() => user?.avatar_url && setShowAvatarModal(true)}
+          style={{ cursor: user?.avatar_url ? 'pointer' : 'default' }}
+        />
         <span className="user-name">{user ? `${user.first_name} ${user.last_name}` : 'Гость'}</span>
       </div>
+      {/* Модальное окно для аватарки */}
+      {showAvatarModal && user?.avatar_url && (
+        <div className="avatar-modal" onClick={() => setShowAvatarModal(false)}>
+          <div className="avatar-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="avatar-modal-close" onClick={() => setShowAvatarModal(false)}>&times;</button>
+            <img src={user.avatar_url} alt="avatar-large" className="avatar-large" />
+          </div>
+        </div>
+      )}
       {/* Центральная часть */}
       {!started ? (
         <div className="center-block">
